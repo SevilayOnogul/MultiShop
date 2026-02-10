@@ -21,6 +21,11 @@ Bu proje; mikroservis mimarisini, farklı veri tabanı ve teknolojileri bir arad
 - **Discount Service**
   - MSSQL ve Dapper kullanılarak geliştirilmiştir.
   - Kupon ve indirim işlemlerini yönetir.
+ 
+- **Order Service**
+  - Onion Architecture kullanılarak geliştirilmiştir.
+  - CQRS ve MediatR tasarım desenleri uygulanmıştır.
+
 
 ## Proje Durumu
 Proje geliştirme aşamasındadır ve eğitim kapsamında adım adım ilerlemektedir.
