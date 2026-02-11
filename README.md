@@ -18,6 +18,7 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 - CQRS
 - Onion Architecture
 - IdentityServer4
+- JSON Web Token (JWT)
 - Docker
 - Portainer
 - Mikroservis Mimarisi
@@ -43,6 +44,7 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 - MSSQL kullanılarak geliştirilmiştir.
 - Docker ve Portainer ile container ortamında çalıştırılmaktadır.
 - IdentityServer4 altyapısı ile kimlik doğrulama ve yetkilendirme işlemlerini yönetir.
+- JSON Web Token (JWT) ile token üretimi ve doğrulama mekanizması uygulanmıştır.
 
 ---
 
