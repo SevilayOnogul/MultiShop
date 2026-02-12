@@ -28,6 +28,13 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 
 ## 🧩 Mikroservisler
 
+### 🚚 Cargo Service (N-Tier Architecture)
+- MSSQL kullanılarak geliştirilmiştir.
+- N-Tier Architecture prensiplerine uygun olarak tasarlanmıştır.
+- Kargo ve teslimat süreçlerinin yönetiminden sorumludur.
+- Siparişlerin gönderim takibini sağlar.
+
+
 ### 📦 Catalog Service
 - MongoDB kullanılarak geliştirilmiştir.
 - Ürün ve kategori yönetiminden sorumludur.
@@ -36,7 +43,7 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 - MSSQL ve Dapper kullanılarak geliştirilmiştir.
 - Kupon ve indirim işlemlerini yönetir.
 
-### 🧾 Order Service
+### 🧾 Order Service (Onion Architecture + CQRS)
 - Onion Architecture ile kurgulanmıştır.
 - CQRS ve MediatR tasarım desenleri uygulanmıştır.
 - Sipariş süreçlerini yönetir.
@@ -55,6 +62,8 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 - Authorization middleware kullanılarak yetkisiz erişimler engellenmektedir.
 - Protected endpoint’lerde `[Authorize]` attribute uygulanmıştır.
 - Servisler arası güvenli erişim token doğrulaması ile sağlanmaktadır.
+- Access token doğrulaması ASP.NET Core authentication middleware pipeline içerisinde gerçekleştirilmektedir.
+
 
 ---
 
@@ -76,8 +85,10 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 | Catalog    | 7070     | MongoDB  | 27017         |
 | Discount   | 7071     | MSSQL    | 1434          |
 | Order      | 7072     | MSSQL    | 1440          |
+| Cargo      | 7073     | MSSQL    | 1441          |
 
-> Not: MSSQL servisleri Docker container üzerinde çalışmaktadır.
+> Not: MSSQL veritabanları Docker container üzerinde çalıştırılmaktadır.
+
 
 ---
 
@@ -101,6 +112,8 @@ docker-compose up -d
 - Catalog → http://localhost:7070
 - Discount → http://localhost:7071
 - Order → http://localhost:7072
+- Cargo → http://localhost:7073
+
 
 ---
 
