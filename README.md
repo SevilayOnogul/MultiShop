@@ -11,14 +11,15 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 - ASP.NET Core 8
 - MongoDB
 - Microsoft SQL Server
-- Dapper
 - Entity Framework Core
+- Dapper
 - AutoMapper
 - MediatR
 - CQRS
 - Onion Architecture
 - IdentityServer4
 - JSON Web Token (JWT)
+- Authentication & Authorization Middleware
 - Docker
 - Portainer
 - Mikroservis Mimarisi
@@ -43,18 +44,63 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 ### 🔐 Identity Service
 - MSSQL kullanılarak geliştirilmiştir.
 - Docker ve Portainer ile container ortamında çalıştırılmaktadır.
-- IdentityServer4 altyapısı ile kimlik doğrulama ve yetkilendirme işlemlerini yönetir.
-- JSON Web Token (JWT) ile token üretimi ve doğrulama mekanizması uygulanmıştır.
+- IdentityServer4 altyapısı ile kimlik doğrulama işlemleri sağlanmaktadır.
+- JSON Web Token (JWT) ile token üretimi gerçekleştirilmektedir.
+
+---
+
+## 🔒 Security Architecture
+
+- Mikroservisler JWT tabanlı kimlik doğrulama ile korunmaktadır.
+- Authorization middleware kullanılarak yetkisiz erişimler engellenmektedir.
+- Protected endpoint’lerde `[Authorize]` attribute uygulanmıştır.
+- Servisler arası güvenli erişim token doğrulaması ile sağlanmaktadır.
 
 ---
 
 ## 🛠️ Altyapı ve Araçlar (Infrastructure)
 
-- **Docker & Portainer:** Mikroservislerin container ortamında çalıştırılması ve yönetimi için kullanılmıştır.
-- **Microsoft SQL Server (Container):** Order ve Identity servisleri için Docker üzerinde konumlandırılmıştır.
-- **MongoDB:** Catalog servisi için NoSQL veri tabanı çözümü olarak kullanılmıştır.
-- **IdentityServer4:** OAuth2 ve OpenID Connect protokolleri üzerinden güvenli kimlik doğrulama ve yetkilendirme altyapısı sağlar.
-- **DBeaver:** MSSQL ve MongoDB veritabanlarının yönetimi için kullanılmıştır.
+- **Docker & Portainer:** Mikroservislerin container ortamında çalıştırılması ve yönetimi.
+- **Microsoft SQL Server (Container):** Order, Identity ve Discount servisleri için Docker üzerinde konumlandırılmıştır.
+- **MongoDB:** Catalog servisi için NoSQL veri tabanı çözümü.
+- **IdentityServer4:** OAuth2 ve OpenID Connect tabanlı kimlik doğrulama altyapısı.
+- **DBeaver:** MSSQL ve MongoDB veritabanlarının yönetimi.
+
+---
+
+## 🌐 Servis Port Bilgileri
+
+| Service   | API Port | Database | Database Port |
+|------------|----------|----------|---------------|
+| Identity   | 5001     | MSSQL    | 1435          |
+| Catalog    | 7070     | MongoDB  | 27017         |
+| Discount   | 7071     | MSSQL    | 1434          |
+| Order      | 7072     | MSSQL    | 1440          |
+
+> Not: MSSQL servisleri Docker container üzerinde çalışmaktadır.
+
+---
+
+## ▶️ Projeyi Çalıştırma
+
+### 1️⃣ Repository’yi Klonla
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+```
+
+### 2️⃣ Docker Container’ları Başlat
+
+```bash
+docker-compose up -d
+```
+
+### 3️⃣ Servisleri Çalıştır
+
+- Identity → http://localhost:5001
+- Catalog → http://localhost:7070
+- Discount → http://localhost:7071
+- Order → http://localhost:7072
 
 ---
 
