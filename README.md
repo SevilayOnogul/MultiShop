@@ -44,6 +44,11 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 - MongoDB kullanılarak geliştirilmiştir.
 - Ürün ve kategori yönetiminden sorumludur.
 
+### 💬 Comment Service
+- MSSQL kullanılarak geliştirilmiştir.
+- Entity Framework Core ile veri erişimi sağlanmaktadır.
+- Ürünlere ait kullanıcı yorumlarının yönetimini sağlar.
+
 ### 🎟 Discount Service
 - MSSQL ve Dapper kullanılarak geliştirilmiştir.
 - Kupon ve indirim işlemlerini yönetir.
@@ -68,9 +73,29 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 - Protected endpoint’lerde `[Authorize]` attribute uygulanmıştır.
 - Servisler arası güvenli erişim token doğrulaması ile sağlanmaktadır.
 - Access token doğrulaması ASP.NET Core authentication middleware pipeline içerisinde gerçekleştirilmektedir.
+- Token süreleri ve kimlik doğrulama ayarları Identity Service üzerinden yönetilmektedir.
 
 
 ---
+
+## 🖥️ Uygulama Özellikleri (Application Features)
+
+### 🛍️ Storefront (Frontend UI)
+- Ürün listeleme
+- Kategoriye göre filtreleme
+- Ürün detay sayfası
+- Yorum ekleme & listeleme
+- Sepet işlemleri (Redis destekli)
+- İletişim formu
+- Hakkımızda sayfası
+
+### 🧑‍💼 Admin Panel
+- Ürün CRUD işlemleri
+- Ürün görsel yönetimi
+- Kategori yönetimi
+- Yorum yönetimi
+- Hakkımızda içerik yönetimi
+
 
 ## 🛠️ Altyapı ve Araçlar (Infrastructure)
 
@@ -94,10 +119,10 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 | Order      | 7072     | MSSQL    | 1440          |
 | Cargo      | 7073     | MSSQL    | 1441          |
 | Basket     | 7074     | Redis    | 6379          |
+| Comment    | 7275     | MSSQL    | 1442          |
 
 
-> Not: MSSQL ve Redis servisleri Docker container üzerinde çalıştırılmaktadır. MongoDB ise development ortamında yerel olarak konfigüre edilmiştir.
-
+> Not: MSSQL ve Redis servisleri Docker container üzerinde çalıştırılmaktadır. MongoDB geliştirme ortamında local olarak çalışmaktadır. Canlı ortamda Docker container içinde kullanılması hedeflenmektedir.
 
 ---
 
@@ -123,11 +148,11 @@ docker-compose up -d
 - Order → http://localhost:7072
 - Cargo → http://localhost:7073
 - Basket → http://localhost:7074
+- Comment → https://localhost:7275
 
 
 ---
 
 ## 📌 Proje Durumu
 
-Proje geliştirme aşamasındadır ve eğitim kapsamında adım adım ilerlemektedir.  
-Yeni mikroservisler ve altyapı bileşenleri eklenmeye devam etmektedir.
+Bu proje, mikroservis mimarisi ve dağıtık sistem yapısını öğrenmek ve uygulamak amacıyla geliştirilmektedir. Geliştirme süreci aktif olarak devam etmektedir.
