@@ -55,10 +55,10 @@ namespace MultiShop.WebUI.Controllers
             }
             return View();
         }
-        //public IActionResult Deneme1()
-        //{
-        //    return View();
-        //}
+        public IActionResult Deneme1()
+        {
+            return View();
+        }
 
         //public async Task<IActionResult> Deneme2()
         //{
