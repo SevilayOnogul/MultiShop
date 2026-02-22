@@ -2,15 +2,76 @@
 
 MultiShop, **ASP.NET Core 8** kullanılarak geliştirilen, mikroservis mimarisine sahip bir e-ticaret uygulamasıdır.
 
-Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mimarileri ve kimlik doğrulama altyapılarını bir arada kullanarak gerçek bir e-ticaret senaryosu üzerinden öğrenmek ve uygulamak amacıyla geliştirilmektedir.
+Bu proje; mikroservis mimarisi, farklı veri tabanı teknolojileri, modern yazılım mimarileri ve kimlik doğrulama altyapılarını gerçek bir e-ticaret senaryosu üzerinden uygulamalı olarak deneyimlemek amacıyla geliştirilmiştir.
 
 ---
 
-## 🚀 Kullanılan Teknolojiler
+# 🏗 Architecture Overview
+
+Proje, bağımsız olarak geliştirilebilen ve dağıtılabilen mikroservislerden oluşmaktadır.  
+Her servis kendi veri tabanına sahiptir ve merkezi bir API Gateway üzerinden erişilir.
+
+## Kullanılan Mimari Yaklaşımlar
+
+- Mikroservis Mimarisi
+- Database per Service Pattern
+- API Gateway Pattern
+- CQRS Pattern
+- Onion Architecture
+- N-Tier Architecture
+- Containerization (Docker)
+
+---
+
+# 🧭 API Gateway (Ocelot)
+
+Projede API Gateway olarak **Ocelot** kullanılmıştır.  
+Tüm istemci istekleri gateway üzerinden ilgili mikroservislere yönlendirilir.
+
+Gateway sistemin tek giriş noktasıdır:
+
+```
+http://localhost:5000
+```
+
+## Gateway Özellikleri
+
+- Merkezi routing yönetimi
+- JWT tabanlı authentication doğrulaması
+- Scope bazlı authorization kontrolü
+- Mikroservis bazlı route ayrımı
+- Single Entry Point mimarisi
+
+## Routing Yapısı
+
+İstemciden gelen istek formatı:
+
+```
+/services/{service-name}/{everything}
+```
+
+Örnek:
+
+```
+/services/catalog/products
+```
+
+Gateway bu isteği ilgili mikroservisin şu endpoint’ine yönlendirir:
+
+```
+/api/{everything}
+```
+
+Bu yapı sayesinde istemci tarafı servislerin gerçek port ve adres bilgilerini bilmez.
+
+---
+
+# 🚀 Kullanılan Teknolojiler
 
 - ASP.NET Core 8
 - MongoDB
 - Microsoft SQL Server
+- Redis
 - Entity Framework Core
 - Dapper
 - AutoMapper
@@ -19,140 +80,168 @@ Bu proje; mikroservis mimarisini, farklı veri tabanları, modern yazılım mima
 - Onion Architecture
 - IdentityServer4
 - JSON Web Token (JWT)
-- Authentication & Authorization Middleware
-- Docker
+- Docker & Docker Compose
 - Portainer
-- Mikroservis Mimarisi
 
 ---
 
-## 🧩 Mikroservisler
+# 🧩 Mikroservisler
 
-### 🛒 Basket Service (Single Layer Architecture)
+## 🛒 Basket Service (Single Layer Architecture)
 - Redis kullanılarak geliştirilmiştir.
-- Single Layer mimari ile basit ve hızlı geliştirme hedeflenmiştir.
 - Kullanıcıların sepet işlemlerini yönetir.
-- Redis, primary data store olarak kullanılmaktadır.
+- Primary data store olarak Redis kullanılmaktadır.
 
-### 🚚 Cargo Service (N-Tier Architecture)
+## 🚚 Cargo Service (N-Tier Architecture)
 - MSSQL kullanılarak geliştirilmiştir.
-- N-Tier Architecture prensiplerine uygun olarak tasarlanmıştır.
-- Kargo ve teslimat süreçlerinin yönetiminden sorumludur.
-- Siparişlerin gönderim takibini sağlar.
+- Katmanlı mimariye uygun olarak tasarlanmıştır.
+- Kargo ve teslimat süreçlerini yönetir.
 
-### 📦 Catalog Service
+## 📦 Catalog Service
 - MongoDB kullanılarak geliştirilmiştir.
 - Ürün ve kategori yönetiminden sorumludur.
 
-### 💬 Comment Service
-- MSSQL kullanılarak geliştirilmiştir.
-- Entity Framework Core ile veri erişimi sağlanmaktadır.
-- Ürünlere ait kullanıcı yorumlarının yönetimini sağlar.
+## 💬 Comment Service
+- MSSQL & Entity Framework Core kullanır.
+- Ürün yorumlarını yönetir.
 
-### 🎟 Discount Service
-- MSSQL ve Dapper kullanılarak geliştirilmiştir.
+## 🎟 Discount Service
+- MSSQL & Dapper kullanır.
 - Kupon ve indirim işlemlerini yönetir.
 
-### 🧾 Order Service (Onion Architecture + CQRS)
-- Onion Architecture ile kurgulanmıştır.
-- CQRS ve MediatR tasarım desenleri uygulanmıştır.
-- Sipariş süreçlerini yönetir.
+## 🧾 Order Service (Onion Architecture + CQRS)
+- Onion Architecture uygulanmıştır.
+- CQRS ve MediatR pattern kullanılmıştır.
+- Sipariş yönetimini sağlar.
 
-### 🔐 Identity Service
-- MSSQL kullanılarak geliştirilmiştir.
-- Docker ve Portainer ile container ortamında çalıştırılmaktadır.
-- IdentityServer4 altyapısı ile kimlik doğrulama işlemleri sağlanmaktadır.
-- JSON Web Token (JWT) ile token üretimi gerçekleştirilmektedir.
+## 🔐 Identity Service
+- IdentityServer4 altyapısı kullanılmıştır.
+- JWT üretimi sağlar.
+- OAuth2 & OpenID Connect standartlarına uygundur.
+- Docker container üzerinde çalışmaktadır.
 
----
+## 💳 Payment Service
+- Ödeme süreçlerinin simülasyonunu gerçekleştirir.
 
-## 🔒 Security Architecture
-
-- Mikroservisler JWT tabanlı kimlik doğrulama ile korunmaktadır.
-- Authorization middleware kullanılarak yetkisiz erişimler engellenmektedir.
-- Protected endpoint’lerde `[Authorize]` attribute uygulanmıştır.
-- Servisler arası güvenli erişim token doğrulaması ile sağlanmaktadır.
-- Access token doğrulaması ASP.NET Core authentication middleware pipeline içerisinde gerçekleştirilmektedir.
-- Token süreleri ve kimlik doğrulama ayarları Identity Service üzerinden yönetilmektedir.
-
+## 🖼 Images Service
+- Ürün görsellerinin yönetimini sağlar.
 
 ---
 
-## 🖥️ Uygulama Özellikleri (Application Features)
+# 🔒 Security Architecture
 
-### 🛍️ Storefront (Frontend UI)
-- Ürün listeleme
-- Kategoriye göre filtreleme
-- Ürün detay sayfası
-- Yorum ekleme & listeleme
-- Sepet işlemleri (Redis destekli)
-- İletişim formu
-- Hakkımızda sayfası
+- JWT tabanlı authentication
+- Scope bazlı authorization
+- `[Authorize]` attribute ile endpoint koruması
+- Gateway seviyesinde token doğrulama
+- Servisler arası güvenli erişim
 
-### 🧑‍💼 Admin Panel
-- Ürün CRUD işlemleri
-- Ürün görsel yönetimi
-- Kategori yönetimi
-- Yorum yönetimi
-- Hakkımızda içerik yönetimi
-
-
-## 🛠️ Altyapı ve Araçlar (Infrastructure)
-
-- **Docker & Portainer:** Mikroservislerin container ortamında çalıştırılması ve yönetimi.
-- **Microsoft SQL Server (Container):** Order, Identity, Discount ve Cargo servisleri için Docker üzerinde konumlandırılmıştır.
-- **MongoDB:** Catalog servisi için NoSQL veri tabanı çözümü.
-- **Redis (Container):** Basket servisi için in-memory veri saklama çözümü.
-- **IdentityServer4:** OAuth2 ve OpenID Connect tabanlı kimlik doğrulama altyapısı.
-- **DBeaver:** MSSQL ve MongoDB veritabanlarının yönetimi.
-
+Token üretimi ve konfigürasyonu Identity Service üzerinden yönetilmektedir.
 
 ---
 
-## 🌐 Servis Port Bilgileri
+# 🛠 Infrastructure
+
+- Docker & Docker Compose
+- Portainer
+- MSSQL (Container)
+- Redis (Container)
+- MongoDB
+- DBeaver
+
+---
+
+# 🌐 Servis Port Bilgileri
 
 | Service    | API Port | Database | Database Port |
 |------------|----------|----------|---------------|
+| Gateway    | 5000     | -        | -             |
 | Identity   | 5001     | MSSQL    | 1435          |
 | Catalog    | 7070     | MongoDB  | 27017         |
 | Discount   | 7071     | MSSQL    | 1434          |
 | Order      | 7072     | MSSQL    | 1440          |
 | Cargo      | 7073     | MSSQL    | 1441          |
 | Basket     | 7074     | Redis    | 6379          |
-| Comment    | 7275     | MSSQL    | 1442          |
+| Comment    | 7075     | MSSQL    | 1442          |
+| Payment    | 7076     | -        | -             |
+| Images     | 7077     | -        | -             |
 
-
-> Not: MSSQL ve Redis servisleri Docker container üzerinde çalıştırılmaktadır. MongoDB geliştirme ortamında local olarak çalışmaktadır. Canlı ortamda Docker container içinde kullanılması hedeflenmektedir.
+> Not: MSSQL ve Redis servisleri Docker container üzerinde çalışmaktadır. MongoDB geliştirme ortamında local olarak konumlandırılmıştır.
 
 ---
 
-## ▶️ Projeyi Çalıştırma
+# 🔄 Request Flow (İstek Akışı)
 
-### 1️⃣ Repository’yi Klonla
+1. Client → API Gateway  
+2. Gateway → JWT doğrulaması  
+3. Gateway → İlgili mikroservise routing  
+4. Mikroservis → Kendi veri tabanı ile iletişim  
+5. Response → Gateway → Client  
+
+Bu yapı ile merkezi güvenlik ve bağımsız servis yönetimi sağlanmaktadır.
+
+---
+
+# 🧱 Architecture Diagram (Logical)
+
+```
+Client
+   |
+   v
+API Gateway (Ocelot)
+   |
+   |---- Catalog Service (MongoDB)
+   |---- Basket Service (Redis)
+   |---- Order Service (MSSQL)
+   |---- Discount Service (MSSQL)
+   |---- Cargo Service (MSSQL)
+   |---- Comment Service (MSSQL)
+   |---- Identity Service (MSSQL)
+   |---- Payment Service
+   |---- Images Service
+```
+
+---
+
+# 📦 Gelecek Geliştirmeler (Roadmap)
+
+- Service Discovery (Consul)
+- Centralized Logging (ELK / Seq)
+- Distributed Tracing
+- Event-Driven Communication (RabbitMQ)
+- CI/CD Pipeline
+- Kubernetes Deployment
+
+---
+
+# ▶️ Projeyi Çalıştırma
+
+## 1️⃣ Repository’yi Klonla
 
 ```bash
 git clone https://github.com/your-username/your-repo-name.git
 ```
 
-### 2️⃣ Docker Container’ları Başlat
+## 2️⃣ Docker Container’ları Başlat
 
 ```bash
 docker-compose up -d
 ```
 
-### 3️⃣ Servisleri Çalıştır
+## 3️⃣ Servisleri Çalıştır
 
+- Gateway → http://localhost:5000
 - Identity → http://localhost:5001
 - Catalog → http://localhost:7070
 - Discount → http://localhost:7071
 - Order → http://localhost:7072
 - Cargo → http://localhost:7073
 - Basket → http://localhost:7074
-- Comment → https://localhost:7275
-
+- Comment → http://localhost:7075
 
 ---
 
-## 📌 Proje Durumu
+# 📌 Proje Durumu
 
-Bu proje, mikroservis mimarisi ve dağıtık sistem yapısını öğrenmek ve uygulamak amacıyla geliştirilmektedir. Geliştirme süreci aktif olarak devam etmektedir.
+Bu proje mikroservis mimarisi, dağıtık sistem tasarımı ve modern .NET ekosistemini öğrenmek amacıyla geliştirilmektedir.  
+Geliştirme süreci aktif olarak devam etmektedir.
