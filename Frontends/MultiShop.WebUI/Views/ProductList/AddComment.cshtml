@@ -1,0 +1,52 @@
+﻿<div class="col-md-6">
+    <h4 class="mb-4">Bir Yorum Yapın</h4>
+    <small>Yorumunuzun alınması için geçerli bir email adresi giriniz. *</small>
+
+    <form method="post" asp-action="AddComment" asp-controller="ProductList">
+        <div class="d-flex my-3">
+            <p class="mb-0 mr-2">Ürün puanınız * :</p>
+            <div class="text-primary">
+                @for (int i = 0; i < 5; i++)
+                {
+                    <i class="far fa-star star-icon" id="@i" onclick="toggleStar(this,@i)" style="cursor:pointer"></i>
+                }
+            </div>
+            <input name="Rating" id="rating" type="hidden" value="0" />
+        </div>
+
+        <div class="form-group">
+            <label for="name">Adınız Soyadınız *</label>
+            <input type="text" class="form-control" id="name" name="NameSurname">
+        </div>
+        <div class="form-group">
+            <label for="email">Email Adresiniz *</label>
+            <input type="email" class="form-control" id="email" name="Email">
+        </div>
+        <div class="form-group">
+            <label for="message">Yorumunuz *</label>
+            <textarea id="message" cols="30" rows="5" class="form-control" name="CommentDetail"></textarea>
+        </div>
+
+        <input type="hidden" name="ProductId" value="@ViewBag.x" />
+
+        <div class="form-group mb-0">
+            <input type="submit" value="Yorum Yap" class="btn btn-primary px-3">
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleStar(star, id) {
+        var stars = document.getElementsByClassName('star-icon');
+        for (var i = 0; i < stars.length; i++) {
+            if (i <= id) {
+                stars[i].classList.remove('far');
+                stars[i].classList.add('fas');
+            } else {
+                stars[i].classList.remove('fas');
+                stars[i].classList.add('far');
+            }
+        }
+        document.getElementById('rating').value = id + 1;
+    }
+</script>
