@@ -3,7 +3,7 @@ ASP.NET Core 8 | Microservices Architecture | Ocelot API Gateway | JWT Auth | Do
 
 MultiShop, **ASP.NET Core 8** kullanılarak geliştirilen, mikroservis mimarisine sahip bir e-ticaret uygulamasıdır.
 
-Bu proje; mikroservis mimarisi, farklı veri tabanı teknolojileri ve modern yazılım mimarilerini gerçek bir e-ticaret senaryosu üzerinden uygulayarak uçtan uca dağıtık bir sistem tasarlamak ve hayata geçirmek amacıyla geliştirilen kapsamlı bir referans uygulamadır. Geliştirme süreci aktif olarak devam etmektedir.
+Bu proje; mikroservis mimarisi, farklı veri tabanı teknolojileri ve modern yazılım mimarilerini gerçek bir e-ticaret senaryosu üzerinden uygulayarak uçtan uca dağıtık bir sistem tasarlamak ve hayata geçirmek amacıyla geliştirilen kapsamlı bir referans uygulamadır.
 
 # 🎯 Projenin Amacı
 
@@ -99,11 +99,19 @@ Bu yapı sayesinde istemci tarafı servislerin gerçek port ve adres bilgilerini
 - Docker & Docker Compose
 - Portainer
 - SignalR (Real-Time Communication)
+- MailKit / MimeKit
+- RabbitMQ
+- ASP.NET Core Localization
   
 ---
 
 # 🧩 Mikroservisler
 
+## 🔄 RabbitMQ Message Service
+- Servisler arası asenkron iletişim için kullanılmaktadır.
+- Mesaj kuyruğu yönetimi ile sistemin loosely coupled (gevşek bağlı) çalışmasını sağlar.
+- İşlem yoğunluğunu dengeleyerek veri kaybını önler.
+  
 ## 🛒 Basket Service (Single Layer Architecture)
 - Redis kullanılarak geliştirilmiştir.
 - Kullanıcıların sepet işlemlerini yönetir.
@@ -182,6 +190,8 @@ Bu katman:
 - Client Credential Token Handler ile servisler arası güvenli iletişim sağlar
 - Kullanıcı ve admin panellerini içerir
 - SignalR ile gerçek zamanlı bildirim ve mesaj sayısı güncellemesi sağlar
+- **Çoklu Dil Desteği (Localization):** IStringLocalizer ve .resx dosyaları ile TR, EN, FR, DE, IT dilleri desteklenmektedir.
+- **Kültür Yönetimi:** Kullanıcı dil tercihleri CookieRequestCultureProvider üzerinden çerezlerde tutulmaktadır.
 
 ## User Area
 
@@ -200,7 +210,7 @@ Bu katman:
 - Yorum yönetimi
 - İçerik yönetimi
 
-# 🛠 Infrastructure
+# 🛠 Infrastructure  
 
 - Docker & Docker Compose
 - Portainer
@@ -210,24 +220,39 @@ Bu katman:
 - PostgreSQL (Local Development)
 - DBeaver
 
+# 🌐 Dış Servis Entegrasyonları (RapidAPI)
+
+Proje içerisinde verilerin zenginleştirilmesi için RapidAPI üzerinden aşağıdaki entegrasyonlar sağlanmıştır:
+- **Döviz Kurları (Exchange Rate):** Güncel kur takibi.
+- **Hava Durumu (Weather):** Lokasyon bazlı veri çekimi.
+- **E-Ticaret Verileri:** Farklı platformlardan mock veri çekimi.
+  
 ---
+
+# ✉️ Mail Altyapısı (MailKit)
+
+Projede sistem bildirimleri ve iletişim süreçleri için gelişmiş bir mail gönderim yapısı kurulmuştur:
+- **MailKit & MimeKit:** Profesyonel SMTP entegrasyonu.
+- **Google SMTP:** Güvenli uygulama şifresi (App Password) kullanımı.
+- **Asenkron Gönderim:** UI tarafını bloklamayan mail gönderim süreçleri.
+  
 
 # 🌐 Servis Port Bilgileri
 
-| Service    | API Port |  Database  | Database Port |
-|------------|----------|------------|---------------|
-| Gateway    | 5000     | -          | -             |
-| Identity   | 5001     | MSSQL      | 1435          |
-| Catalog    | 7070     | MongoDB    | 27017         |
-| Discount   | 7071     | MSSQL      | 1434          |
-| Order      | 7072     | MSSQL      | 1440          |
-| Cargo      | 7073     | MSSQL      | 1441          |
-| Basket     | 7074     | Redis      | 6379          |
-| Comment    | 7075     | MSSQL      | 1442          |
-| Payment    | 7076     | -          | -             |
-| Images     | 7077     | -          | -             |
-| Message    | 7078     | PostgreSQL | 5432          |
-| SignalR    | 7079     | -          | -             |
+| Service    | API Port |  Database  | Database Port |         Açıklama           |
+|------------|----------|------------|---------------|----------------------------|
+| Gateway    | 5000     | -          | -             | Ocelot API Gateway         |
+| Identity   | 5001     | MSSQL      | 1435          | Kimlik Doğrulama & JWT     |
+| Catalog    | 7070     | MongoDB    | 27017         | Ürün & Kategori Yönetimi   |
+| Discount   | 7071     | MSSQL      | 1434          | Kupon & İndirim Sistemi    |
+| Order      | 7072     | MSSQL      | 1440          | Sipariş Yönetimi (CQRS)    |
+| Cargo      | 7073     | MSSQL      | 1441          | Kargo Takip Sistemi        |
+| Basket     | 7074     | Redis      | 6379          | Sepet İşlemleri            |
+| Comment    | 7075     | MSSQL      | 1442          | Kullanıcı Yorumları        |
+| Payment    | 7076     | -          | -             | Ödeme Simülasyonu          |
+| Images     | 7077     | -          | -             | Görsel Depolama            |
+| Message    | 7078     | PostgreSQL | 5432          | Kullanıcı Mesajlaşma       |
+| SignalR    | 7079     | -          | -             | Gerçek Zamanlı Bildirim    |
 
 
 > Not: MSSQL ve Redis servisleri Docker container üzerinde çalışmaktadır. 
@@ -268,18 +293,6 @@ API Gateway (Ocelot)
    |---- Images Service
 ```
 
----
-
-# 📦 Gelecek Geliştirmeler (Roadmap)
-
-- Service Discovery (Consul)
-- Centralized Logging (ELK / Seq)
-- Distributed Tracing
-- Event-Driven Communication (RabbitMQ)
-- CI/CD Pipeline
-- Kubernetes Deployment
-
----
 
 # ▶️ Projeyi Çalıştırma
 
@@ -310,11 +323,6 @@ docker-compose up -d
 
 
 ---
-
-# 📌 Proje Durumu
-
-Bu proje mikroservis mimarisi, dağıtık sistem tasarımı ve modern .NET ekosistemini öğrenmek amacıyla geliştirilmektedir.  
-Geliştirme süreci aktif olarak devam etmektedir.
 
 
 # 📚 Teknik Yetkinlikler
