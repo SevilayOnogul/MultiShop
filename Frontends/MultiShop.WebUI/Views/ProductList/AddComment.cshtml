@@ -2,7 +2,7 @@
     <h4 class="mb-4">Bir Yorum Yapın</h4>
     <small>Yorumunuzun alınması için geçerli bir email adresi giriniz. *</small>
 
-    <form method="post" asp-action="AddComment" asp-controller="ProductList">
+    <form method="post" asp-action="AddComment" asp-controller="ProductList" asp-antiforgery="false">
         <div class="d-flex my-3">
             <p class="mb-0 mr-2">Ürün puanınız * :</p>
             <div class="text-primary">

@@ -39,6 +39,7 @@ namespace MultiShop.WebUI.Controllers
         }
 
         [HttpPost]
+        [IgnoreAntiforgeryToken] // Bu satırı ekle
         public async Task<IActionResult> AddComment(CreateCommentDto createCommentDto)
         {
             createCommentDto.ImageUrl = "test";
@@ -50,7 +51,7 @@ namespace MultiShop.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createCommentDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7275/api/Comments", stringContent);
+            var responseMessage = await client.PostAsync("http://localhost:7075/api/Comments", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "Default");

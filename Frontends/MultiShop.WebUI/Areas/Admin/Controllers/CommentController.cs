@@ -30,7 +30,7 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient();
 
             // 1. Adım: Yorumları Çek
-            var responseMessage = await client.GetAsync("https://localhost:7275/api/Comments");
+            var responseMessage = await client.GetAsync("http://localhost:7075/api/Comments");
             if (!responseMessage.IsSuccessStatusCode)
             {
                 return View();
