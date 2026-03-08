@@ -327,7 +327,7 @@ API Gateway (Ocelot)
 
 
 <img src="./Images/teslimat.png" alt="Teslimat Sayfası" width="100%">
-<img src="./Images/odemeSayfasi.png" alt="Ödeme Sayfası" width="100%">
+<img src="./Images/odemeSayfası.png" alt="Ödeme Sayfası" width="100%">
 <img src="./Images/kart.png" alt="Kart Bilgileri" width="100%">
 </details>
 
