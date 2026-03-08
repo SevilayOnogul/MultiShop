@@ -292,7 +292,51 @@ API Gateway (Ocelot)
    |---- Payment Service
    |---- Images Service
 ```
+# 🖼 Proje Önizleme
+<details>
+<summary>📸 Ana Sayfa & UI Tasarımı</summary>
 
+
+<img src="./Images/anaSayfa.png" alt="Ana Sayfa" width="100%">
+</details>
+
+<details>
+<summary>🐳 Docker & Infrastructure (Portainer)</summary>
+
+
+<img src="./Images/docker.png" alt="Docker Altyapısı" width="100%">
+</details>
+
+<details>
+<summary>🛍 Ürün Detay & Yorumlar</summary>
+
+
+<img src="./Images/urunDetaylari.png" alt="Ürün Detayları" width="100%">
+<img src="./Images/urunYorumlari.png" alt="Ürün Yorumları" width="100%">
+</details>
+
+<details>
+<summary>📊 İstatistikler & Dashboard</summary>
+
+
+<img src="./Images/istatistik.png" alt="İstatistikler" width="100%">
+</details>
+
+<details>
+<summary>💳 Ödeme & Teslimat Süreci</summary>
+
+
+<img src="./Images/teslimat.png" alt="Teslimat Sayfası" width="100%">
+<img src="./Images/odemeSayfasi.png" alt="Ödeme Sayfası" width="100%">
+<img src="./Images/kart.png" alt="Kart Bilgileri" width="100%">
+</details>
+
+<details>
+<summary>⚙️ Admin Panel</summary>
+
+
+<img src="./Images/adminMarkalar.png" alt="Admin Panel" width="100%">
+</details>
 
 # ▶️ Projeyi Çalıştırma
 
