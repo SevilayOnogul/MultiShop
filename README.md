@@ -235,7 +235,38 @@ Projede sistem bildirimleri ve iletişim süreçleri için gelişmiş bir mail g
 - **MailKit & MimeKit:** Profesyonel SMTP entegrasyonu.
 - **Google SMTP:** Güvenli uygulama şifresi (App Password) kullanımı.
 - **Asenkron Gönderim:** UI tarafını bloklamayan mail gönderim süreçleri.
-  
+
+
+  bu şekilde mi ekleyeyim yani readmeye 
+# 🧪 Test Strategy & Quality Assurance
+
+Projede sürdürülebilirlik ve veri tutarlılığını garanti altına almak amacıyla **Pyramid Test Strategy** (Birim ve Entegrasyon Testleri) uygulanmıştır.
+
+### 🛠️ Kullanılan Teknolojiler
+- **xUnit**: Ana test framework'ü.
+- **Moq**: Bağımlılıkların (Dependencies) izolasyonu ve Mock nesne üretimi.
+- **Fluent Assertions**: Okunabilir ve açıklayıcı assertion yapıları.
+- **Dockerized Environment**: MSSQL ve MongoDB için izole test ortamları.
+
+### 🧩 Unit Tests (Birim Testleri)
+İş mantığının (Business Logic) dış bağımlılıklardan izole edilerek test edilmesini sağlar.
+- **Mocking Strategy**: `ICargoCustomerDal`, `IOrderRepository` gibi arayüzler Moq ile taklit edilerek sadece iş kurallarına odaklanılmıştır.
+- **Kapsam**: `ProductService`, `CategoryService`, `CargoCustomerManager`, `Order Command Handlers`.
+
+### 🔗 Integration Tests (Entegrasyon Testleri)
+Sistemin veritabanı katmanıyla (Data Access) olan uyumunu doğrular.
+- **Persistence Validation**: Verilerin MongoDB ve MSSQL'e fiziksel olarak doğru formatta yazıldığı doğrulanmıştır.
+- **AutoMapper Validation**: DTO ile Entity arasındaki mapping süreçlerinin doğruluğu gerçek veri setleri ile test edilmiştir.
+
+### 📊 Test Results & Coverage
+Şu an itibarıyla **12 kritik senaryo** %100 başarı oranıyla çalışmaktadır:
+
+| Service             | Test Count | Status     |
+| :------------------ | :--------: | :--------  |
+| **Cargo Service**   | 2          | ✅ Passed |
+| **Catalog Service** | 7          | ✅ Passed |
+| **Order Service**   | 3          | ✅ Passed |
+
 
 # 🌐 Servis Port Bilgileri
 
